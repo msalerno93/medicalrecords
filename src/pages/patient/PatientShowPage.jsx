@@ -1,7 +1,7 @@
 
 const PatientShowPage = () => {
   return (
-    <div>PatientShowPage</div>
+    <div className="pt-28 px-5">PatientShowPage</div>
   )
 }
 

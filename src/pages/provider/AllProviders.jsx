@@ -1,7 +1,7 @@
 
 const AllProviders = () => {
   return (
-    <div>AllProviders</div>
+    <div className="pt-28 px-5">AllProviders</div>
   )
 }
 

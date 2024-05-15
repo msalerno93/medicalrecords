@@ -1,7 +1,7 @@
 
 const ProviderShowModal = () => {
   return (
-    <div>ProviderShowModal</div>
+    <div className="pt-28 px-5">ProviderShowModal</div>
   )
 }
 

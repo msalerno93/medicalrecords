@@ -1,7 +1,7 @@
 
 const InsuranceShowModal = () => {
   return (
-    <div>InsuranceShowModal</div>
+    <div className="pt-28 px-5">InsuranceShowModal</div>
   )
 }
 
