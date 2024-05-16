@@ -1,15 +1,20 @@
-import { FaBars, FaTimes, FaNotesMedical } from "react-icons/fa";
+import { FaBars, FaTimes, FaNotesMedical, FaHome } from "react-icons/fa";
+import { FaPeopleGroup, FaUserDoctor, FaFileMedical } from "react-icons/fa6";
+import { MdAccountCircle } from "react-icons/md";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const navLinks = [
-    { id: 1, name: "Patients", link: "patients" },
-    { id: 3, name: "Providers", link: "providers" },
-    { id: 4, name: "Insurances", link: "insurances" },
-    // { id: 5, name: "Contact", link: "contact" },
+    { id: 1, name: <FaPeopleGroup/>, link: "patients", title: "All Patients" },
+    { id: 3, name: <FaUserDoctor/>, link: "providers", title: "All Providers" },
+    { id: 4, name: <FaFileMedical/>, link: "insurances", title: "All Insurances" },
+    { id: 5, name: <FaHome/>, link: "/", title: "Home" },
+    { id: 6, name: <MdAccountCircle/>, link: "/", title: "My Account" },
+
   ];
 
   return (
@@ -23,16 +28,16 @@ const NavBar = () => {
         </h1>
       </div>
       <ul className="hidden md:flex">
-        {navLinks.map(({ name, id, link }) => {
-          return (
-            <li
-              key={id}
-              className="px-4 cursor-pointer capitalize font-bold text-2xl text-slate-900 hover:text-slate-200"
-            >
-              <Link to={link} duration={500}>{name}</Link>
-            </li>
-          );
-        })}
+        {navLinks.map(({ name, id, link, title }) => {
+            return (
+              <li
+              title={title}
+                key={id}
+                className="px-6 cursor-pointer capitalize font-bold text-4xl text-slate-900 hover:text-slate-200"
+              >
+                <Link to={link} duration={500}>{name}</Link>
+              </li>       
+        )})}
       </ul>
       <div
         onClick={() => setNav(!nav)}
