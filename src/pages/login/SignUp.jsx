@@ -11,7 +11,7 @@ const signUpForm = [
 const SignUp = () => {
   return (
     <div className="pt-28 px-5">
-          <form action="" className="text-center">
+          <form action="" className="text-center mx-[40%] bg-blue-300 rounded-2xl">
           <div className="grid grid-cols-1">
             {signUpForm.map(({id, label, input}) => {
               return (
