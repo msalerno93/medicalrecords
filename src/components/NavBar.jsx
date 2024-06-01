@@ -18,7 +18,7 @@ const NavBar = () => {
   ];
 
   return (
-    <div className="flex justify-between items-center w-full h-20 px-4 text-slate-900 fixed bg-blue-400">
+    <div className="flex justify-between items-center w-full h-20 px-4 text-slate-800 fixed bg-blue-700">
       <div>
         <h1 className="flex text-5xl font-signature font-bold ml-2">
           <Link to="/">
@@ -69,3 +69,17 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
+
+// export default function NavBar() {
+//   return (
+//       <nav className="bg-blue-700 p-4 flex items-center justify-between">
+//           <h1 className="text-white text-2xl font-bold">Medical App</h1>
+//           <div className="hidden md:flex space-x-4">
+//               <a href="#" className="text-white hover:text-blue-200">Home</a>
+//               <a href="#" className="text-white hover:text-blue-200">Patients</a>
+//               <a href="#" className="text-white hover:text-blue-200">Providers</a>
+//           </div>
+//       </nav>
+//   )
+// }

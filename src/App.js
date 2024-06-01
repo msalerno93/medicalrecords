@@ -10,7 +10,7 @@ import NavBar from "./components/NavBar";
 
 function App() {
   return (
-    <div className="bg-blue-200 min-h-screen w-full">
+    <div className="bg-blue-300 min-h-screen w-full">
     <NavBar/>
     <Routes>
       <Route path="/" element={<SignIn />} />
