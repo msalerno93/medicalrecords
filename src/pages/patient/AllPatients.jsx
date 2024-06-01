@@ -13,16 +13,15 @@ export const headings = [
 
 const AllPatients = () => {
   const [data, setData] = useState([]);
-
+  const url = process.env.REACT_APP_API_URL
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3005/patients");
+        const response = await fetch(`${url}patients`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const result = await response.json();
-        console.log(result.patients[0].firstName);
         setData(result.patients);
       } catch (error) {
         return error.message;
@@ -37,9 +36,9 @@ const AllPatients = () => {
     <div className="pt-24 px-10 max-w-[100%]">
       <AllItemsDisplay headings={headings}/>
 
-      {data.map(({ firstName, lastName, birthDate, insuranceName }) => {
+      {data.map(({ _id, firstName, lastName, birthDate, insuranceName }) => {
         return (
-          <div className="text-center list-none py-2 text-xl font-bold">
+          <div key={_id} className="text-center list-none py-2 text-xl font-bold">
             <div className="grid grid-cols-3 hover:bg-blue-400">
             <Link to="/">{lastName}, {firstName}</Link>
             <Link to="/">{birthDate}</Link>

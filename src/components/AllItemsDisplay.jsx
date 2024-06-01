@@ -13,10 +13,10 @@ const AllItemsDisplay = ({headings, children}) => {
         </Link>
       </Button>
 
-      <div className="grid grid-cols-3 text-center text-4xl font-bold py-5">
+      <div className="grid grid-cols-3 text-center text-4xl font-bold gap-16 py-5">
         {headings.map((header) => {
           return (
-            <h1>{header}</h1>
+            <h1 key={header}>{header}</h1>
           )
         })}
         </div>
