@@ -39,7 +39,7 @@ const AllProviders = () => {
         return (
           <div key={_id} className="text-center list-none py-2 text-xl font-bold">
             <div className="grid grid-cols-3 hover:bg-blue-400">
-            <Link to="/">{lastName}, {firstName}</Link>
+            <Link to={`/provider/${_id}`}>{lastName}, {firstName}</Link>
             <Link to="/">{npiNumber}</Link>
             <Link to="/">{specialty}</Link>
             </div>

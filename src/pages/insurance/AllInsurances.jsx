@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AllItemsDisplay from "../../components/AllItemsDisplay";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
