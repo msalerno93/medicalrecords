@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
+import { Link } from "react-router-dom";
 
 const InsuranceShowModal = () => {
   const [data, setData] = useState([]);
@@ -67,6 +68,11 @@ const InsuranceShowModal = () => {
 
   return (
     <div className="pt-28 px-5 text-center">
+            <div className="text-left">
+        <Button>
+          <Link to="/insurances">Return to Insurances</Link>
+        </Button>
+      </div>
       <h1 className="text-3xl font-bold">{data.name}</h1>
       <div className="text-xl">
         <p>{data.street}</p>
