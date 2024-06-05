@@ -7,6 +7,7 @@ import AllProviders from "./pages/provider/AllProviders";
 import AllInsurances from "./pages/insurance/AllInsurances";
 import NotFound from "./pages/NotFound";
 import NavBar from "./components/NavBar";
+import InsuranceShowModal from "./pages/insurance/InsuranceShowModal";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/patient/:id" element={<PatientShowPage />} />
       <Route path="/providers" element={<AllProviders />} />
       <Route path="/insurances" element={<AllInsurances />} />
+      <Route path="/insurance/:id" element={<InsuranceShowModal />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     </div>
