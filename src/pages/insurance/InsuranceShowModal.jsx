@@ -13,28 +13,7 @@ const InsuranceShowModal = () => {
 
   const url = process.env.REACT_APP_API_URL;
   const { id } = useParams();
-
-    const updateInsurance = (e) => {
-      e.preventDefault();
-      fetch(`${url}insurance/${id}`, {
-        method: "PUT",
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editInsurance)
-      })
-        .then((response) => {
-          return response.json()
-          }).then(
-            setIsModalOpen(false)
-          ).then(
-            navigate(`/insurances`)
-          )
-        .catch((e) => console.log(e));
-    };
   
-
-  useEffect(() => {
     const fetchSingleData = async () => {
       try {
         const response = await fetch(`${url}insurance/${id}`);
@@ -49,8 +28,28 @@ const InsuranceShowModal = () => {
         return error.message;
       }
     };
-    fetchSingleData();
-  }, []);
+  
+    useEffect(() => {fetchSingleData()}, [])
+  const updateInsurance = (e) => {
+    e.preventDefault();
+    fetch(`${url}insurance/${id}`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(editInsurance)
+    })
+      .then((response) => {
+        return response.json()
+        }).then(
+          setIsModalOpen(false)
+        ).then(
+          navigate(`/insurance/${id}`)
+        ).then(
+          fetchSingleData()
+        )
+      .catch((e) => console.log(e));
+  };
 
 
   const deleteInsurance = () => {
