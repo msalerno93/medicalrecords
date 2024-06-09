@@ -8,7 +8,7 @@ const AllItemsDisplay = ({headings, children}) => {
   return (
     <div className="pt-18 px-10 max-w-[100%]">
       <Button>
-        <Link to="/" className="inline-flex text-xl">
+        <Link to="/welcome" className="inline-flex text-xl">
         <FaHome className="text-2xl pr-1 pt-1"/> Back Home
         </Link>
       </Button>

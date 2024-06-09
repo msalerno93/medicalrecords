@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import NavBar from "./components/NavBar";
 import InsuranceShowModal from "./pages/insurance/InsuranceShowModal";
 import ProviderShowModal from "./pages/provider/ProviderShowModal";
+import WelcomePage from "./pages/provider/WelcomePage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/" element={<SignIn />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp/>} />
+      <Route path="/welcome" element={<WelcomePage/>} />
       <Route path="/patients" element={<AllPatients />} />
       <Route path="/patient/:id" element={<PatientShowPage />} />
       <Route path="/providers" element={<AllProviders />} />
