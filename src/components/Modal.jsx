@@ -6,7 +6,7 @@ const Modal = ({ isOpen, onClose, children, formTitle, setIsDelete }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="fixed inset-0 bg-gray-900 opacity-50"></div>
-      <div className="bg-blue-300 rounded-lg shadow-lg p-8 z-10 w-[50%] h-[60%] relative">
+      <div className="bg-blue-300 rounded-lg shadow-lg p-8 z-10 w-[50%] h-[65%] relative">
         <button
           onClick={() => {
             if (formTitle === "Delete Insurance") {
