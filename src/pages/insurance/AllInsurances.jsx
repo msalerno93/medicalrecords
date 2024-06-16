@@ -132,10 +132,18 @@ const AllInsurances = () => {
             key={_id}
             className="text-center list-none py-2 text-xl font-bold"
           >
-            <div className="grid grid-cols-3 hover:bg-blue-400">
-              <button>{name}</button>
-              <Link to={`/insurance/${_id}`}>{phoneNumber}</Link>
-              <button>{street}</button>
+            <div
+              key={_id}
+              className="text-center list-none py-2 text-xl font-bold"
+            >
+              <Link
+                to={`/insurance/${_id}`}
+                className="grid grid-cols-3 hover:bg-blue-400"
+              >
+                <p>{name}</p>
+                <p>{phoneNumber}</p>
+                <p>{street}</p>
+              </Link>
             </div>
           </div>
         );

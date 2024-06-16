@@ -181,13 +181,13 @@ const AllPatients = () => {
             key={_id}
             className="text-center list-none py-2 text-xl font-bold"
           >
-            <div className="grid grid-cols-3 hover:bg-blue-400">
-              <Link to="/">
-                {lastName}, {firstName}
-              </Link>
-              <Link to="/">{birthDate}</Link>
-              <Link to="/">{insuranceName}</Link>
-            </div>
+            <div key={_id} className="text-center list-none py-2 text-xl font-bold">
+            <Link to={`/patient/${_id}`} className="grid grid-cols-3 hover:bg-blue-400">
+            <p>{lastName}, {firstName}</p>
+            <p>{birthDate}</p>
+            <p>{insuranceName}</p>
+            </Link >
+          </div>
           </div>
         );
       })}
@@ -212,8 +212,11 @@ const AllPatients = () => {
                 </div>
               );
             })}
-
             <select
+              value={insuranceName}
+              onChange={(e) => {
+                setInsuranceName(e.target.value)
+              }}
               id="Insurance"
               className="bg-blue-500 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
@@ -222,11 +225,7 @@ const AllPatients = () => {
               </option>
               {insurances.map(({ _id, name }) => {
                 return (
-                  <option
-                    onChange={(e) => setInsuranceName(e.target.value)}
-                    key={_id}
-                    value={name}
-                  >
+                  <option key={_id} value={name}>
                     {name}
                   </option>
                 );
