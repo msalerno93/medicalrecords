@@ -1,39 +1,39 @@
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie'
+import { useSelector, useDispatch } from 'react-redux'
+import { login, reset } from '../../auth/authSlice'
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
 
-    const response = await fetch("http://localhost:3005/user/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+  useEffect(() => {
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Login successful:', data);
-      // Save token in cookies
-      Cookies.set('token', data.token, { expires: 1 }); // Expires in 1 day
+    if (isSuccess || user) {
       navigate('/patients')
-    } else {
-      console.error('Login failed');
-      // Handle login failure (e.g., show error message)
     }
-  };
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+
+    const userData = {
+      email,
+      password,
+    }
+
+    dispatch(login(userData))
+  }
 
   return (
     <div className="pt-24 pb-10 px-5 text-center items-center font-bolder">

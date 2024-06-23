@@ -40,9 +40,32 @@ const PatientShowPage = () => {
     }
   };
 
+  const patientInfo = [
+    {
+      id: 1,
+      name: "Street",
+      display: data.street,
+    },
+    {
+      id: 2,
+      name: "City",
+      display: data.city,
+    },
+    {
+      id: 3,
+      name: "State",
+      display: data.state,
+    },
+    {
+      id: 4,
+      name: "Zip Code",
+      display: data.zipCode,
+    },
+  ];
+
   useEffect(() => {
     fetchSinglePatient();
-    fetchPatientNotes()
+    fetchPatientNotes();
   }, []);
   return (
     <div className="pt-20 px-5 text-center">
@@ -65,26 +88,36 @@ const PatientShowPage = () => {
       </div>
       <div className="grid grid-cols-2 pb-10">
         <div>
-          <h1 className="text-2xl font-bold">Patient Info</h1>
-          <p>{data.street}</p>
-          <p>{data.city}</p>
-          <p>{data.state}</p>
-          <p>{data.zipCode}</p>
+          <h1 className="text-3xl font-bold">Patient Info</h1>
+          {patientInfo.map(({ id, name, display }) => {
+            return (
+              <p key={id} className="text-xl">
+                {name}: {display}
+              </p>
+            );
+          })}
         </div>
         <div>
           <div>
             <h1 className="text-2xl font-bold">Patient Insurance</h1>
             <p>{data.insuranceName}</p>
+            <p>{data.policyNumber}</p>
           </div>
         </div>
       </div>
       <div className="text-center">
         <h1 className="text-2xl font-bold">Progress Notes</h1>
-        {notes.map((n) => {
-          return (
-            <p>{n.note}</p>
-          )
-        })}
+        <div className="grid grid-cols-2 gap-0 mx-10">
+          {notes.map((n) => {
+            return (
+              <div className="py-2">
+                <p>{n.note}</p>
+                <p>{n.date}</p>
+                <p>{n.provider}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
