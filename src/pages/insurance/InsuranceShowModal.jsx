@@ -14,7 +14,24 @@ const InsuranceShowModal = () => {
 
   const url = process.env.REACT_APP_API_URL;
   const { id } = useParams();
-  
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`${url}providers`);
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       const result = await response.json();
+  //       setData(result.providers);
+  //     } catch (error) {
+  //       return error.message;
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [() => postNewProvider()]);
+
     const fetchSingleData = async () => {
       try {
         const response = await fetch(`${url}insurance/${id}`);
@@ -29,29 +46,33 @@ const InsuranceShowModal = () => {
         return error.message;
       }
     };
+
+    useEffect(() => {
+      fetchSingleData()
+    }, [])
   
-    useEffect(() => {fetchSingleData()}, [])
+
   const updateInsurance = (e) => {
     e.preventDefault();
     fetch(`${url}insurance/${id}`, {
       method: "PUT",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(editInsurance)
+      body: JSON.stringify(editInsurance),
     })
       .then((response) => {
-        return response.json()
-        }).then(
-          setIsModalOpen(false)
-        ).then(
+        return response.json();
+      })
+      .then(setIsModalOpen(false))
+      .then(
+        setTimeout(() => {
           navigate(`/insurance/${id}`)
-        ).then(
           fetchSingleData()
-        )
+        }, 500)
+      )
       .catch((e) => console.log(e));
   };
-
 
   const deleteInsurance = () => {
     fetch(`${url}insurance/${id}`, {
@@ -68,7 +89,7 @@ const InsuranceShowModal = () => {
 
   return (
     <div className="pt-28 px-5 text-center">
-            <div className="text-left">
+      <div className="text-left">
         <Button>
           <Link to="/insurances">Return to Insurances</Link>
         </Button>
@@ -143,69 +164,104 @@ const InsuranceShowModal = () => {
           >
             <form action="" method="PUT" onSubmit={updateInsurance}>
               <div className="grid grid-cols-2">
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>Name</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, name: e.target.value})}
-                        value={editInsurance.name}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>Street</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, street: e.target.value})}
-                        value={editInsurance.street}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>City</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, city: e.target.value})}
-                        value={editInsurance.city}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>State</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, state: e.target.value})}
-                        value={editInsurance.state}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>Zip</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, zipCode: e.target.value})}
-                        value={editInsurance.zipCode}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>Phone</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, phoneNumber: e.target.value})}
-                        value={editInsurance.phoneNumber}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
-                    <div className="flex p-1 text-lg font-bold">
-                      <p>Fax</p>{" "}
-                      <input
-                        onChange={(e) => setEditInsurance({...editInsurance, faxNumber: e.target.value})}
-                        value={editInsurance.faxNumber}
-                        className="bg-blue-200 ml-2 w-[60%] pl-2"
-                        type="text"
-                      />
-                    </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>Name</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        name: e.target.value,
+                      })
+                    }
+                    value={editInsurance.name}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>Street</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        street: e.target.value,
+                      })
+                    }
+                    value={editInsurance.street}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>City</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        city: e.target.value,
+                      })
+                    }
+                    value={editInsurance.city}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>State</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        state: e.target.value,
+                      })
+                    }
+                    value={editInsurance.state}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>Zip</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        zipCode: e.target.value,
+                      })
+                    }
+                    value={editInsurance.zipCode}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>Phone</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        phoneNumber: e.target.value,
+                      })
+                    }
+                    value={editInsurance.phoneNumber}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
+                <div className="flex p-1 text-lg font-bold">
+                  <p>Fax</p>{" "}
+                  <input
+                    onChange={(e) =>
+                      setEditInsurance({
+                        ...editInsurance,
+                        faxNumber: e.target.value,
+                      })
+                    }
+                    value={editInsurance.faxNumber}
+                    className="bg-blue-200 ml-2 w-[60%] pl-2"
+                    type="text"
+                  />
+                </div>
               </div>
               <div className="text-center">
                 <Button>Edit Insurance</Button>

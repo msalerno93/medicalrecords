@@ -47,8 +47,12 @@ const ProviderShowModal = () => {
         return response.json();
       })
       .then(setIsModalOpen(false))
-      .then(navigate(`/provider/${id}`))
-      .then(fetchSingleData())
+      .then(
+        setTimeout(() => {
+          navigate(`/provider/${id}`);
+          fetchSingleData();
+        }, 500)
+      )
       .catch((e) => console.log(e));
   };
 
