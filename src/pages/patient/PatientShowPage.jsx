@@ -99,7 +99,7 @@ const PatientShowPage = () => {
       name: "Email",
       display: data.email,
     },
-  ]
+  ];
 
   useEffect(() => {
     fetchSinglePatient();
@@ -133,28 +133,24 @@ const PatientShowPage = () => {
           <h1 className="text-3xl font-bold">Patient Information</h1>
           <div className="grid grid-cols-2 pt-5">
             <div>
-            <div className="text-2xl font-bold">
-                Address Info
-              </div>
-            {patientInfo.map(({ id, name, display }) => {
-            return (
-              <p key={id} className="text-xl">
-                {name}: {display}
-              </p>
-            );
-          })}
+              <div className="text-2xl font-bold">Address Info</div>
+              {patientInfo.map(({ id, name, display }) => {
+                return (
+                  <p key={id} className="text-xl">
+                    {name}: {display}
+                  </p>
+                );
+              })}
             </div>
             <div>
-              <div className="text-2xl font-bold">
-                Contact Info
-              </div>
-            {patientContact.map(({ id, name, display }) => {
-            return (
-              <p key={id} className="text-xl">
-                {name}: {display}
-              </p>
-            );
-          })}
+              <div className="text-2xl font-bold">Contact Info</div>
+              {patientContact.map(({ id, name, display }) => {
+                return (
+                  <p key={id} className="text-xl">
+                    {name}: {display}
+                  </p>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -167,14 +163,24 @@ const PatientShowPage = () => {
         </div>
       </div>
       <div className="text-center">
-        <h1 className="text-3xl font-bold pb-5">Progress Notes</h1>
+        <div className="">
+          <h1 className="text-3xl font-bold pb-2">Progress Notes</h1>
+          <div className="pb-5">
+            <button className="text-xl font-bold bg-blue-400 rounded-xl px-2 hover:bg-blue-500">
+              Add Note
+            </button>
+          </div>
+        </div>
         <div className="grid grid-cols-3 gap-0 mx-10 text-left">
           {notes.map((n) => {
             return (
-              <div className="py-2 pb-5">
+              <div className="py-10 px-5 shadow-md shadow-blue-900">
                 <p className="text-xl">Progress Note: {n.note}</p>
                 <p className="text-xl">Date: {n.date}</p>
-                <p className="text-xl">Provider: {n.provider}</p>
+                <p className="text-xl pb-1">Provider: {n.provider}</p>
+                <button className="text-xl font-bold bg-blue-400 rounded-xl px-2 hover:bg-blue-500">
+                  Edit
+                </button>
               </div>
             );
           })}
