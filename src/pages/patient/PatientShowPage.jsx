@@ -8,12 +8,36 @@ const PatientShowPage = () => {
   const [editPatient, setEditPatient] = useState([]);
   const [notes, setNotes] = useState([]);
   const [editNote, setEditNote] = useState([]);
+  const [isEditNotes, setIsEditNotes] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noteId, setNoteId] = useState();
 
   const url = process.env.REACT_APP_API_URL;
   const { id } = useParams();
-
   const navigate = useNavigate();
+
+  const editTheNote = (noteId) => {
+      // console.log(`${url}patient/${id}/notes/${noteId}/edit`);
+
+    fetch(`${url}patient/${id}/notes/${noteId}/edit`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editNote),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then(setIsModalOpen(false))
+      .then(
+        setTimeout(() => {
+          navigate(`/patient/${id}`);
+          fetchSinglePatient();
+        }, 500)
+      )
+      .catch((e) => console.log(e));
+  }
 
   const fetchSinglePatient = async () => {
     try {
@@ -39,7 +63,6 @@ const PatientShowPage = () => {
       const result = await response.json();
       setNotes(result);
       console.log(result.note);
-      setEditNote(result);
     } catch (error) {
       return error.message;
     }
@@ -105,6 +128,8 @@ const PatientShowPage = () => {
     fetchSinglePatient();
     fetchPatientNotes();
   }, []);
+
+
   return (
     <div className="pt-20 pb-5 px-5 text-center">
       <div>
@@ -115,7 +140,9 @@ const PatientShowPage = () => {
         </div>
         <div className="text-right">
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setIsEditNotes(false)
+              setIsModalOpen(true)}}
             className="text-2xl font-bold mb-2 bg-blue-400 rounded-3xl px-3 py-1 hover:bg-blue-500"
           >
             Edit Patient
@@ -172,23 +199,84 @@ const PatientShowPage = () => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-0 mx-10 text-left">
-          {notes.map((n) => {
+          {notes.map(({note, date, provider, _id}) => {
             return (
-              <div className="py-10 px-5 shadow-md shadow-blue-900">
-                <p className="text-xl">Progress Note: {n.note}</p>
-                <p className="text-xl">Date: {n.date}</p>
-                <p className="text-xl pb-1">Provider: {n.provider}</p>
-                <button className="text-xl font-bold bg-blue-400 rounded-xl px-2 hover:bg-blue-500">
+              <div key={_id} className="py-10 px-5 shadow-md shadow-blue-900">
+                <p className="text-xl">Progress Note: {note}</p>
+                <p className="text-xl">Date: {date}</p>
+                <p className="text-xl pb-1">Provider: {provider}</p>
+                <button onClick={() => {
+                  setNoteId(_id)
+                  setIsEditNotes(true)
+                  setIsModalOpen(true)
+                }} className="text-xl font-bold bg-blue-400 rounded-xl px-2 hover:bg-blue-500">
                   Edit
                 </button>
-              </div>
-            );
-          })}
-        </div>
+                <div key={_id}>
+                {isEditNotes ?
         <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        formTitle="Edit Patient"
+      >
+        <form action="" method="PUT">
+          <div className="grid grid-cols-2">
+            <div className="flex p-1 text-lg font-bold">
+              <p>Provider</p>{" "}
+              <input
+                onChange={(e) =>
+                  setEditNote({
+                    ...editNote,
+                    provider: e.target.value,
+                  })
+                }
+                value={provider}
+                className="bg-blue-200 ml-2 w-[60%] pl-2"
+                type="text"
+              />
+            </div>
+            <div className="flex p-1 text-lg font-bold">
+              <p>Date</p>{" "}
+              <input
+                onChange={(e) =>
+                  setEditNote({
+                    ...editNote,
+                    date: e.target.value,
+                  })
+                }
+                value={date}
+                className="bg-blue-200 ml-2 w-[60%] pl-2"
+                type="text"
+              />
+            </div>
+          </div>
+          <div className="align-center">
+            <div className="flex p-1 text-lg font-bold">
+              <p>Note</p>{" "}
+              <textarea
+                onChange={(e) =>
+                  setEditNote({
+                    ...editNote,
+                    note: e.target.value,
+                  })
+                }
+                value={editPatient.notes.note}
+                className="bg-blue-200 ml-2 w-[80%] min-h-48 pl-2"
+                type="textarea"
+              />
+            </div>
+            </div>
+          <div className="text-center">
+            <Button onClick={() => {
+              editTheNote(noteId)
+            }}>Edit Patient</Button>
+          </div>
+        </form>
+      </Modal> :
+      <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          formTitle="Edit Provider"
+          formTitle="Edit Patient"
         >
           <form action="" method="PUT" onSubmit={updatePatient}>
             <div className="grid grid-cols-2">
@@ -349,6 +437,14 @@ const PatientShowPage = () => {
             </div>
           </form>
         </Modal>
+      }
+                </div>
+
+                
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
