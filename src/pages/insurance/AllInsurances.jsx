@@ -122,7 +122,7 @@ const AllInsurances = () => {
       <Button action={() => setIsModalOpen(true)}>Add Insurance</Button>
       <h1 className="text-center text-4xl">All Insurances</h1>
       <AllItemsDisplay headings={headings} />
-      <div className="text-center text-xl bg-green-100 font-bold">
+      <div className="text-center text-xl bg-green-200 font-bold">
         {message}
       </div>
 

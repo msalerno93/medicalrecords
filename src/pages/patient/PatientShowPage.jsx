@@ -6,39 +6,53 @@ import Modal from "../../components/Modal";
 const PatientShowPage = () => {
   const [data, setData] = useState([]);
   const [editPatient, setEditPatient] = useState([]);
-  const [notes, setNotes] = useState([]);
-  const [editNote, setEditNote] = useState([]);
-  const [isEditNotes, setIsEditNotes] = useState(false)
+  const [insurance, setInsurance] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [noteId, setNoteId] = useState();
+  const [message, setMessage] = useState('')
+  // const [notes, setNotes] = useState([]);
+  // const [editNote, setEditNote] = useState([]);
+  // const [isEditNotes, setIsEditNotes] = useState(false)
+  // const [noteId, setNoteId] = useState();
 
   const url = process.env.REACT_APP_API_URL;
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const editTheNote = (noteId) => {
-      // console.log(`${url}patient/${id}/notes/${noteId}/edit`);
+  // const editTheNote = (noteId) => {
+  //     // console.log(`${url}patient/${id}/notes/${noteId}/edit`);
 
-    fetch(`${url}patient/${id}/notes/${noteId}/edit`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editNote),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then(setIsModalOpen(false))
-      .then(
-        setTimeout(() => {
-          navigate(`/patient/${id}`);
-          fetchSinglePatient();
-        }, 500)
-      )
-      .catch((e) => console.log(e));
+  //   fetch(`${url}patient/${id}/notes/${noteId}/edit`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(editNote),
+  //   })
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then(setIsModalOpen(false))
+  //     .then(
+  //       setTimeout(() => {
+  //         navigate(`/patient/${id}`);
+  //         fetchSinglePatient();
+  //       }, 500)
+  //     )
+  //     .catch((e) => console.log(e));
+  // }
+  const fetchInsurances = async () => {
+    try {
+      const response = await fetch(`${url}insurances`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+      setInsurance(result.insurances);
+      // setId(result.insurances.map((e) => e._id))
+    } catch (error) {
+      return error.message;
+    }
   }
-
   const fetchSinglePatient = async () => {
     try {
       const response = await fetch(`${url}patient/${id}`);
@@ -54,19 +68,20 @@ const PatientShowPage = () => {
     }
   };
 
-  const fetchPatientNotes = async () => {
-    try {
-      const response = await fetch(`${url}patient/${id}/notes`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await response.json();
-      setNotes(result);
-      console.log(result.note);
-    } catch (error) {
-      return error.message;
-    }
-  };
+  
+  // const fetchPatientNotes = async () => {
+  //   try {
+  //     const response = await fetch(`${url}patient/${id}/notes`);
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const result = await response.json();
+  //     setNotes(result);
+  //     console.log(result.note);
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // };
   const updatePatient = (e) => {
     e.preventDefault();
     fetch(`${url}patient/${id}`, {
@@ -80,11 +95,17 @@ const PatientShowPage = () => {
         return response.json();
       })
       .then(setIsModalOpen(false))
+      .then(setMessage("Changes Completed"))
       .then(
         setTimeout(() => {
           navigate(`/patient/${id}`);
           fetchSinglePatient();
         }, 500)
+      )
+      .then(
+        setTimeout(() => {
+          setMessage('')
+        }, 1000)
       )
       .catch((e) => console.log(e));
   };
@@ -126,7 +147,8 @@ const PatientShowPage = () => {
 
   useEffect(() => {
     fetchSinglePatient();
-    fetchPatientNotes();
+    fetchInsurances()
+    // fetchPatientNotes();
   }, []);
 
 
@@ -141,13 +163,15 @@ const PatientShowPage = () => {
         <div className="text-right">
           <button
             onClick={() => {
-              setIsEditNotes(false)
               setIsModalOpen(true)}}
             className="text-2xl font-bold mb-2 bg-blue-400 rounded-3xl px-3 py-1 hover:bg-blue-500"
           >
             Edit Patient
           </button>
         </div>
+      </div>
+      <div className="text-center text-xl bg-green-200 font-bold">
+        {message}
       </div>
       <div className="text-left pb-10 font-bold">
         <h1 className="text-5xl">
@@ -188,8 +212,181 @@ const PatientShowPage = () => {
             <p className="text-xl">Policy: {data.policyNumber}</p>
           </div>
         </div>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          formTitle="Edit Patient"
+        >
+          <form action="" method="PUT" onSubmit={updatePatient}>
+            <div className="grid grid-cols-2">
+              <div className="flex p-1 text-lg font-bold">
+                <p>First Name</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      firstName: e.target.value,
+                    })
+                  }
+                  value={editPatient.firstName}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>Last Name</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      lastName: e.target.value,
+                    })
+                  }
+                  value={editPatient.lastName}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>DOB</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      birthDate: e.target.value,
+                    })
+                  }
+                  value={editPatient.birthDate}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>Street</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      street: e.target.value,
+                    })
+                  }
+                  value={editPatient.street}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>City</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({ ...editPatient, city: e.target.value })
+                  }
+                  value={editPatient.city}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>State</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      state: e.target.value,
+                    })
+                  }
+                  value={editPatient.state}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>Zip</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      zipCode: e.target.value,
+                    })
+                  }
+                  value={editPatient.zipCode}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>Phone</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      phoneNumber: e.target.value,
+                    })
+                  }
+                  value={editPatient.phoneNumber}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>Email</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      email: e.target.value,
+                    })
+                  }
+                  value={editPatient.email}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+                <p>Policy</p>{" "}
+                <input
+                  onChange={(e) =>
+                    setEditPatient({
+                      ...editPatient,
+                      policyNumber: e.target.value,
+                    })
+                  }
+                  value={editPatient.policyNumber}
+                  className="bg-blue-200 ml-2 w-[60%] pl-2"
+                  type="text"
+                />
+              </div>
+              <div className="flex p-1 text-lg font-bold">
+              <select
+              value={editPatient.insuranceName}
+              onChange={(e) => {
+                setEditPatient({
+                  ...editPatient,
+                  insuranceName: e.target.value})
+              }}
+              id="Insurance"
+              className="bg-blue-500 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option defaultValue="Choose Insurance">
+                Choose an Insurance
+              </option>
+              {insurance.map(({ _id, name }) => {
+                return (
+                  <option key={_id} value={name}>
+                    {name}
+                  </option>
+                );
+              })}
+            </select>
+              </div>
+            </div>
+            <div className="text-center">
+              <Button>Edit Patient</Button>
+            </div>
+          </form>
+        </Modal>
       </div>
-      <div className="text-center">
+      {/* <div className="text-center">
         <div className="">
           <h1 className="text-3xl font-bold pb-2">Progress Notes</h1>
           <div className="pb-5">
@@ -209,6 +406,7 @@ const PatientShowPage = () => {
                   setNoteId(_id)
                   setIsEditNotes(true)
                   setIsModalOpen(true)
+                  console.log(editPatient.notes.provider);
                 }} className="text-xl font-bold bg-blue-400 rounded-xl px-2 hover:bg-blue-500">
                   Edit
                 </button>
@@ -445,7 +643,7 @@ const PatientShowPage = () => {
             );
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
