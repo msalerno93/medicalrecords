@@ -13,7 +13,7 @@ const NavBar = () => {
     { id: 3, name: <FaUserDoctor/>, link: "providers", title: "All Providers" },
     { id: 4, name: <FaFileMedical/>, link: "insurances", title: "All Insurances" },
     { id: 5, name: <FaHome/>, link: "/", title: "Home" },
-    { id: 6, name: <MdAccountCircle/>, link: "/", title: "My Account" },
+    // { id: 6, name: <MdAccountCircle/>, link: "/", title: "My Account" },
 
   ];
 
