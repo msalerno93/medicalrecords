@@ -80,9 +80,9 @@ const ProviderShowModal = () => {
         {data.lastName}, {data.firstName}
       </h1>
       <div className="text-xl">
-        <p>{data.specialty}</p>
-        <p>{data.npiNumber}</p>
-        <p>{data.taxIdNumber}</p>
+        <p>Specialty: {data.specialty}</p>
+        <p>NPI: {data.npiNumber}</p>
+        <p>TaxId: {data.taxIdNumber}</p>
         <p>{data.street}</p>
         <p>{data.city}</p>
         <p>{data.zipCode}</p>

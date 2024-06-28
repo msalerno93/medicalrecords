@@ -28,6 +28,48 @@ const AllPatients = () => {
 
   const url = process.env.REACT_APP_API_URL;
 
+  const postNewPatient = async (e) => {
+    e.preventDefault();
+    const patient = {
+      firstName,
+      lastName,
+      birthDate,
+      street,
+      city,
+      state,
+      zipCode,
+      phoneNumber,
+      policyNumber,
+      email,
+      insuranceName,
+    };
+    fetch(`${url}addpatient`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patient),
+    });
+    setMessage("Added Patient Successfully!");
+    setFirstName("");
+    setLastName("");
+    setStreet("");
+    setCity("");
+    setState("");
+    setZipCode("");
+    setStreet("");
+    setPhoneNumber("");
+    setEmail("");
+    setInsuranceName("");
+    setPolicyNumber("");
+    setTimeout(() => {
+      setIsModalOpen(false);
+      navigate("/patients");
+    }, 500);
+    setTimeout(() => {
+      setMessage("");
+    }, 2000);
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -58,7 +100,7 @@ const AllPatients = () => {
 
     fetchData();
     fetchInsurances();
-  }, []);
+  }, [() => postNewPatient()]);
 
   const addFormInfo = [
     {
@@ -129,51 +171,15 @@ const AllPatients = () => {
     // },
   ];
 
-  const postNewPatient = async (e) => {
-    e.preventDefault();
-    const patient = {
-      firstName,
-      lastName,
-      birthDate,
-      street,
-      city,
-      state,
-      zipCode,
-      phoneNumber,
-      policyNumber,
-      email,
-      insuranceName,
-    };
-    fetch(`${url}addpatient`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(patient),
-    });
-    setMessage("Added Patient Successfully!");
-    setFirstName("");
-    setLastName("");
-    setStreet("");
-    setCity("");
-    setState("");
-    setZipCode("");
-    setStreet("");
-    setPhoneNumber("");
-    setEmail("");
-    setInsuranceName("");
-    setPolicyNumber("");
-    setTimeout(() => {
-      setIsModalOpen(false);
-      navigate("/patients");
-    }, 500);
-    setTimeout(() => {
-      setMessage("");
-    }, 2000);
-  };
   return (
     <div className="pt-24 px-10 max-w-[100%]">
       <Button action={() => setIsModalOpen(true)}>Add Patient</Button>
 
       <AllItemsDisplay headings={headings} />
+
+      <div className="text-center text-xl bg-green-200 font-bold">
+        {message}
+      </div>
 
       {data.map(({ _id, firstName, lastName, birthDate, insuranceName }) => {
         return (

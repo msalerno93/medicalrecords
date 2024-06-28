@@ -13,7 +13,7 @@ import WelcomePage from "./pages/provider/WelcomePage";
 
 function App() {
   return (
-    <div className="bg-blue-300 min-h-screen w-full">
+    <div className="bg-blue-300 min-h-screen w-full pb-10">
     <NavBar/>
     <Routes>
       <Route path="/" element={<WelcomePage />} />

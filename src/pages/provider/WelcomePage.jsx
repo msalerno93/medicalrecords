@@ -11,6 +11,12 @@ const WelcomePage = () => {
   return (
     <div className="pt-28 text-center">
 <div className="text-5xl">Welcome To MedRexEHR!</div>
+<p className="text-red-500">
+          PLEASE NOTE: This is not a mobile-friendly application
+        </p>
+        <p className="text-red-500">
+          Access to patient records outside of the office is a HIPAA violation
+        </p>
       <div className="grid grid-cols-3 text-center text-8xl px-20">
         {welcomeLinks.map(({ id, link, icon, name }) => {
           return (
